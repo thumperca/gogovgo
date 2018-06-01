@@ -1915,14 +1915,31 @@ select.location-selector {
   padding: 15px 30px;
   border-radius: 6px;
   margin-bottom: 15px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  letter-spacing: 1px;
+  font-size: 13px;
 }
 
-#signup footer {
+#signup .border {
   box-shadow: none;
   border-top: 1px solid #eee;
 }
 
-#signup footer h4 {
-  margin-top: 20px;
+#signup .border h4 {
+  margin-top: 25px;
   color: #888;
+}
+
+#signup.login .email input {
+  margin-top: 10px;
+}
+#signup.login p {
+  margin-top: 10px;
+}
+
+#signup.login footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }

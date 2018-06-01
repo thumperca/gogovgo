@@ -11,6 +11,7 @@ import Terms from "./Application/static/Terms";
 import Contact from "./Application/static/Contact";
 import PrivacyPolicy from "./Application/static/PrivacyPolicy";
 import SignUp from "./Application/Auth/SignUp";
+import LogIn from "./Application/Auth/LogIn";
 
 class App extends Component {
     render() {
@@ -43,6 +44,7 @@ class App extends Component {
             <Router>
                 <div>
                     <Route exact path="/signup" component={SignUp} />
+                    <Route exact path="/login" component={LogIn} />
                     <Route exact path="/" component={Tracker(HomeRedirect)} />
                     <Route
                         exact
