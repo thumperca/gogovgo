@@ -61,12 +61,12 @@ class SignUp extends Component {
                             and <u>privacy policy</u>
                         </p>
                     </div>
-                    <footer className="text-center">
+                    <div className="form-group text-center border">
                         <h4>Already have an account?</h4>
                         <a href="/login">
                             <u>Sign in</u>
                         </a>
-                    </footer>
+                    </div>
                 </div>
                 <Footer />
             </div>
