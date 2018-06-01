@@ -1865,3 +1865,64 @@ select.location-selector {
   color: #1875F0 !important;
   background-color: transparent;
 }
+
+/* Sign up page */
+
+#signup .body {
+  width: 90%;
+  max-width: 500px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px 40px;
+}
+
+#signup .body h3 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 25px;
+  margin-bottom: 20px;
+}
+
+#signup .form-group {
+  padding: 5px 0;
+}
+
+#signup .form-group label {
+  color: #888;
+  margin-bottom: 3px;
+}
+
+#signup .form-group p {
+  color: #888;
+  font-size: 12px;
+  margin: 0 0 3px;
+}
+
+#signup .form-group input {
+  border: 1px solid #eee;
+  padding: 20px 10px;
+  color: #888;
+}
+
+#signup .form-group select {
+  color: #888;
+  height: 43px;
+  border: 1px solid #eee;
+}
+
+#signup .form-group button {
+  color: #fff;
+  background-color: #0B4092;
+  padding: 15px 30px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+#signup footer {
+  box-shadow: none;
+  border-top: 1px solid #eee;
+}
+
+#signup footer h4 {
+  margin-top: 20px;
+  color: #888;
+}

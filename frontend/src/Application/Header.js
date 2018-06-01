@@ -5,6 +5,7 @@
 import React, { Component } from "react";
 import HowItWorks from "./HowItWorks";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 class Header extends Component {
     constructor(props, context) {
@@ -12,8 +13,18 @@ class Header extends Component {
         this.state = { howItWorksShow: false };
     }
 
+    signup() {
+        this.props.history.push("/signup");
+    }
+
     render() {
         let howItWorksClose = () => this.setState({ howItWorksShow: false });
+
+        const userIcon = {
+            marginRight: "5px",
+            fontSize: "17px"
+        };
+
         return (
             <Navbar className="main-menu" collapseOnSelect fluid>
                 <Navbar.Header>
@@ -29,6 +40,12 @@ class Header extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav pullRight>
+                        <NavItem className="nav-link how-it-work" onClick={() => this.signup()}>
+                            <i className="fa fa-user-circle" style={userIcon} />
+                            Sign up
+                        </NavItem>
+                    </Nav>
+                    <Nav pullRight>
                         <NavItem
                             className="nav-link how-it-work"
                             onClick={() => this.setState({ howItWorksShow: true })}
@@ -43,4 +60,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);

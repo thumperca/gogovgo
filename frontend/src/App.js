@@ -10,6 +10,7 @@ import Submit from "./Application/Poll/Modal";
 import Terms from "./Application/static/Terms";
 import Contact from "./Application/static/Contact";
 import PrivacyPolicy from "./Application/static/PrivacyPolicy";
+import SignUp from "./Application/Auth/SignUp";
 
 class App extends Component {
     render() {
@@ -41,6 +42,7 @@ class App extends Component {
         return (
             <Router>
                 <div>
+                    <Route exact path="/signup" component={SignUp} />
                     <Route exact path="/" component={Tracker(HomeRedirect)} />
                     <Route
                         exact
