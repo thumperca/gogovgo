@@ -1920,6 +1920,11 @@ select.location-selector {
   font-size: 13px;
 }
 
+#signup .form-group .terms {
+  width: 300px;
+  margin: 0 auto;
+}
+
 #signup .border {
   box-shadow: none;
   border-top: 1px solid #eee;

@@ -4,6 +4,18 @@ import Header from "../Header";
 import Footer from "../Footer";
 
 class SignUp extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            states: []
+        };
+    }
+
+    componentDidMount() {
+        fetch("/api/countries/")
+            .then(res => res.json())
+            .then(data => this.setState({ states: data.states }));
+    }
     render() {
         return (
             <div id="signup">
@@ -48,6 +60,9 @@ class SignUp extends Component {
                         <label>Select your country</label>
                         <select className="form-control">
                             <option>Select your country</option>
+                            {this.state.states.map((state, index) => {
+                                return <option key={index}>{state.long}</option>;
+                            })}
                         </select>
                     </div>
                     <div className="form-group">
@@ -56,7 +71,7 @@ class SignUp extends Component {
                     </div>
                     <div className="form-group text-center">
                         <button>SIGN UP - 100% FREE</button>
-                        <p>
+                        <p className="terms">
                             By creating an account, you agree to the <u>terms of participation</u>{" "}
                             and <u>privacy policy</u>
                         </p>
