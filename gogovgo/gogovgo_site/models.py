@@ -39,6 +39,9 @@ class UserProfile(TimeStampedModel):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, default=GENDER_UNKNOWN, max_length=16)
+    country = models.CharField(max_length=200, null=True)
+    zip_code = models.CharField(max_length=8, null=True)
+    county = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
