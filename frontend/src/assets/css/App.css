@@ -147,6 +147,49 @@ nav.navbar.main-menu {
   z-index: 47;
 }
 
+nav.navbar.main-menu .user i.fa-angle-down {
+  margin: 0 5px;
+  position: relative;
+  padding: 0 8px 0 0;
+  top: 1px;
+}
+
+nav.navbar.main-menu .user i.fa-user-circle {
+  font-size: 35px !important;
+  position: relative;
+  top: 5px;
+  color: #c3c3c3;
+}
+
+nav.navbar.main-menu  .profile-option {
+  position: fixed;
+  top: 50px;
+  right: 30px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+}
+
+nav.navbar.main-menu .profile-option a {
+  cursor: pointer;
+  padding: 30px 50px 10px 30px;
+  font-size: 16px;
+  display: block;
+}
+
+nav.navbar.main-menu  .profile-option a:first-child {
+  color: #999;
+  border-bottom: 1px solid #eee;
+}
+
+nav.navbar.main-menu  .profile-option a:last-child {
+  color: #d92d24;
+  padding: 15px 50px 15px 30px;
+}
+
+nav.navbar.main-menu  .profile-option-mobile {
+  display: none;
+}
 
 .margin_abajo_mini{ margin-bottom: 6px;  }
 .margin_abajo_small{ margin-bottom: 16px;  }
@@ -1571,6 +1614,45 @@ select.location-selector {
 
   .main-menu.navbar {
     height: auto;
+  }
+
+  .main-menu .profile-option {
+    display: none;
+  }
+
+  .main-menu .user i {
+    display: block;
+  }
+
+  .main-menu .user i.fa-angle-down {
+    display: none;
+  }
+
+  .main-menu .user span {
+    position: relative !important;
+    top: 56px !important;
+    color: #444;
+  }
+
+  .user i.fa.fa-user-circle {
+    position: relative !important;
+    top: -30px !important;
+    padding-top: 20px;
+  }
+
+  .main-menu .user .profile-option-mobile {
+    display: block !important;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  .main-menu .user .profile-option-mobile a {
+    display: block;
+  }
+
+  .main-menu .user .profile-option-mobile a:last-child {
+    color: #D92D24;
   }
 
   .main-menu .slogan {
