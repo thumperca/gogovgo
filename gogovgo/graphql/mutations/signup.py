@@ -8,8 +8,10 @@ from graphql import GraphQLError
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 
 from gogovgo.gogovgo_site.models import UserProfile
+from gogovgo.scripts.geocode import get_county
 
 
 class Validator:
@@ -81,8 +83,12 @@ class Validator:
         if country == 'United States of America':
             if not zipcode:
                 self.errors.append('The zipcode field is required.')
+            county = get_county(zipcode, 'US')
+            if not county:
+                    raise GraphQLError('The postal code is invalid')
             else:
                 self.cleaned_data['zipcode'] = zipcode
+                self.cleaned_data['county'] = county
 
 
 
@@ -99,8 +105,15 @@ class Form(Validator):
         return not self.errors
 
     def save(self):
-        pass
-
+        d = self.cleaned_data
+        #   create user
+        user = User(username=d['username'], email=d['email'])
+        user.set_password(d['password'])
+        user.save()
+        #   create userprofile
+        profile = UserProfile(user=user)
+        profile.save()
+        return user
 
 
 class Signup(graphene.Mutation):
