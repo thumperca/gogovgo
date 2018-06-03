@@ -10,7 +10,7 @@ import { withRouter, Link } from "react-router-dom";
 class Header extends Component {
     constructor(props, context) {
         super(props, context);
-        this.state = { howItWorksShow: false, login: true, dropdown: true };
+        this.state = { howItWorksShow: false, login: false, dropdown: false };
     }
 
     signup() {
