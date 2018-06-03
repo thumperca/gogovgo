@@ -21,6 +21,7 @@ from gogovgo.scripts.geocode import get_county
 
 from gogovgo.graphql.mutations import Contact
 from gogovgo.graphql.mutations import Signup
+from gogovgo.graphql.mutations import Login
 
 
 @convert_django_field.register(CloudinaryField)
@@ -291,6 +292,7 @@ class Mutations(graphene.ObjectType):
     report_review = ReportReview.Field()
     contact = Contact.Field()
     signup = Signup.Field()
+    login = Login.Field()
 
 
 class ReviewPaginationHelper(object):
