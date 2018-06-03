@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
+import { withRouter } from "react-router-dom";
 
 import Header from "../Header";
 import Footer from "../Footer";
@@ -35,6 +36,7 @@ class LogIn extends Component {
                         email: "",
                         password: ""
                     };
+                    this.props.history.push("/");
                 } else {
                     state.errors = login.errors;
                 }
@@ -113,4 +115,6 @@ const submitQuery = gql`
     }
 `;
 
-export default graphql(submitQuery)(LogIn);
+const login = graphql(submitQuery)(LogIn);
+
+export default withRouter(login);
