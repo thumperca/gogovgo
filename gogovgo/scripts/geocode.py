@@ -39,7 +39,8 @@ def get_county(postal_code, state):
 
         if not data:
             continue
-        if data.get('country') != 'US' or data.get('administrative_area_level_1') != state:
+        if data.get('country') != 'US':
+        # or data.get('administrative_area_level_1') != state:
             continue
         if data.get('postal_code') != postal_code:
             continue
