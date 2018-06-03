@@ -8,7 +8,7 @@ class SignUp extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            states: [],
+            countries: [],
             form: { name: "", username: "", email: "", password: "", country: "", zipcode: "" },
             created: false,
             errors: []
@@ -18,7 +18,7 @@ class SignUp extends Component {
     componentDidMount() {
         fetch("/api/countries/")
             .then(res => res.json())
-            .then(data => this.setState({ states: data.countries }));
+            .then(data => this.setState({ countries: data.countries }));
     }
 
     handleChange(field, event) {
@@ -149,8 +149,8 @@ class SignUp extends Component {
                         >
                             <option value="">Select your country</option>
                             <option>United States of America</option>
-                            {this.state.states.map((state, index) => {
-                                return <option key={index}>{state.long}</option>;
+                            {this.state.countries.map((country, index) => {
+                                return <option key={index}>{country.long}</option>;
                             })}
                         </select>
                     </div>
