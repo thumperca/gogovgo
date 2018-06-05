@@ -1979,16 +1979,11 @@ select.location-selector {
   margin: 0 0 3px;
 }
 
-#signup .form-group input {
+#signup input, #signup select {
   border: 1px solid #eee;
-  padding: 20px 10px;
   color: #888;
-}
-
-#signup .form-group select {
-  color: #888;
-  height: 43px;
-  border: 1px solid #eee;
+  height: 45px;
+  text-indent: 10px;
 }
 
 #signup .form-group button {
@@ -2030,8 +2025,7 @@ select.location-selector {
   margin-top: 10px;
 }
 
-#signup.login footer {
-  bottom: 0;
-  left: 0;
-  width: 100%;
+#signup.login .body-wrapper {
+  min-height: calc(100vh - 195px);
 }
+

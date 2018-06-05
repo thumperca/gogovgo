@@ -67,36 +67,38 @@ class LogIn extends Component {
         return (
             <div id="signup" className="login">
                 <Header />
-                <div className="body">
-                    <h3 className="text-center">Sign In</h3>
-                    {this.getAlert()}
-                    <div className="form-group email">
-                        <input
-                            onChange={e => this.handleChange("email", e)}
-                            type="email"
-                            placeholder="Email address"
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            onChange={e => this.handleChange("password", e)}
-                            type="password"
-                            placeholder="Password"
-                            className="form-control"
-                        />
-                        <p>
-                            <u>Forgot password</u>
-                        </p>
-                    </div>
-                    <div className="form-group text-center">
-                        <button onClick={this.handleSubmit}>SIGN IN</button>
-                    </div>
-                    <div className="form-group text-center border">
-                        <h4>Do not have an account?</h4>
-                        <a href="/signup">
-                            <u>Sign up - 100% free</u>
-                        </a>
+                <div class="body-wrapper">
+                    <div className="body">
+                        <h3 className="text-center">Sign In</h3>
+                        {this.getAlert()}
+                        <div className="form-group email">
+                            <input
+                                onChange={e => this.handleChange("email", e)}
+                                type="email"
+                                placeholder="Email address"
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                onChange={e => this.handleChange("password", e)}
+                                type="password"
+                                placeholder="Password"
+                                className="form-control"
+                            />
+                            <p>
+                                <u>Forgot password</u>
+                            </p>
+                        </div>
+                        <div className="form-group text-center">
+                            <button onClick={this.handleSubmit}>SIGN IN</button>
+                        </div>
+                        <div className="form-group text-center border">
+                            <h4>Do not have an account?</h4>
+                            <a href="/signup">
+                                <u>Sign up - 100% free</u>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <Footer />
