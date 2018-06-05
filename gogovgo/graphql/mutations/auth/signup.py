@@ -14,7 +14,7 @@ from django.contrib.auth import login
 
 
 from gogovgo.gogovgo_site.models import UserProfile
-from gogovgo.scripts.geocode import get_county
+from gogovgo.scripts.geocode import get_location_info
 
 
 class LocationValidator:
@@ -23,6 +23,15 @@ class LocationValidator:
     def validate_location(self):
         if self.errors:
             return
+        country, zipcode = self.cleaned_data['country'], self.cleaned_data['zipcode']
+        if country != 'US':
+            return
+
+        location_data = get_location_info(zipcode)
+        if not location_data:
+            return self.errors.append('The zip code field is invalid.')
+
+        self.cleaned_data.update(location_data)
 
 
 class FormValidator:
@@ -39,9 +48,14 @@ class FormValidator:
     def validate_name(self):
         name = self.data.get('name', '').strip()
         if not name:
-            self.errors.append('The name field is required.')
-        else:
-            self.cleaned_data['name'] = name
+            return self.errors.append('The name field is required.')
+
+        name_parts = name.split(' ')
+        first_name = name_parts[0]
+        last_name = ' '.join(name_parts[1:])
+
+        self.cleaned_data['first_name'] = first_name
+        self.cleaned_data['last_name'] = last_name
 
     def validate_email(self):
         email = self.data.get('email', '').strip().lower()
@@ -124,14 +138,24 @@ class Form(FormValidator, LocationValidator):
         return not self.errors
 
     def save(self):
-        d = self.cleaned_data
+        data = self.cleaned_data
+
         #   create user
-        user = User(username=d['username'], email=d['email'])
-        user.set_password(d['password'])
+        user = User(username=data['username'],
+                    email=data['email'],
+                    first_name=data['first_name'],
+                    last_name=data['last_name'])
+        user.set_password(data['password'])
         user.save()
+
         #   create userprofile
-        profile = UserProfile(user=user)
-        profile.save()
+        UserProfile.objects.create(user=user,
+                                   country=data['country'],
+                                   state=data.get('state'),
+                                   county=data.get('county'),
+                                   zip_code=data.get('zipcode'),
+                                   longitude=data.get('longitude'),
+                                   latitude=data.get('latitude'))
         return user
 
 

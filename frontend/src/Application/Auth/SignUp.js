@@ -63,12 +63,12 @@ class SignUp extends Component {
             })
             .catch(error => {
                 console.warn("there was an error sending the query", error);
-                this.setState({ errors: [error.graphQLErrors[0].message] });
+                this.setState({ errors: [error.graphQLErrors[0].message], busy: false });
             });
     };
 
     render() {
-        const { form, errors, countries, busy } = this.state;
+        const { form, errors, countries, busy, created } = this.state;
 
         return (
             <div id="signup">
@@ -76,6 +76,11 @@ class SignUp extends Component {
 
                 <div className="body">
                     <h3 className="text-center">Sign Up</h3>
+
+                    {/* account created status */}
+                    {created && (
+                        <div className="alert alert-success">Your account has been created</div>
+                    )}
 
                     {/* Loading status of page */}
                     {busy && (
