@@ -5,10 +5,13 @@ GraphQL mutation to user signup
 import graphene
 from graphql import GraphQLError
 
+from django_countries import countries
+
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth import login
+
 
 from gogovgo.gogovgo_site.models import UserProfile
 from gogovgo.scripts.geocode import get_county
@@ -73,14 +76,17 @@ class Validator:
     def validators_country(self):
         country = self.data.get('country', '').strip()
         if not country:
-            self.errors.append('The country must be selected.')
+            return self.errors.append('The country must be selected.')
+        valid_countries = (short for short, _ in countries)
+        if country not in valid_countries:
+            self.errors.append('The country field is invalid.')
         else:
             self.cleaned_data['country'] = country
 
     def validate_zipcode(self):
         zipcode = self.data.get('zipcode', '').strip()
         country = self.data.get('country', '').strip()
-        if country == 'United States of America':
+        if country == 'US':
             if not zipcode:
                 self.errors.append('The zipcode field is required.')
             county = get_county(zipcode, 'US')
@@ -134,6 +140,5 @@ class Signup(graphene.Mutation):
         form = Form(data=args)
         if not form.is_valid():
             return Signup(created=False, errors=form.errors)
-        # return Signup(created=True, errors=['created'])
         form.save()
         return Signup(created=True, errors=[])

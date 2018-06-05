@@ -19,7 +19,9 @@ class SignUp extends Component {
     componentDidMount() {
         fetch("/api/countries/")
             .then(res => res.json())
-            .then(data => this.setState({ countries: data.countries }));
+            .then(({ countries }) => {
+                this.setState({ countries: countries });
+            });
     }
 
     handleChange(field, event) {
@@ -59,23 +61,8 @@ class SignUp extends Component {
             });
     };
 
-    /**
-     * Alert to show on page
-     * @returns JSX
-     */
-    getAlert() {
-        const { errors } = this.state;
-        if (errors.length)
-            return (
-                <div className="alert alert-danger">
-                    <strong>Failed!</strong> The following error(s) have occured:
-                    <ul>{errors.map((error, index) => <li key={index}>{error}</li>)}</ul>
-                </div>
-            );
-    }
-
     render() {
-        const { form } = this.state;
+        const { form, errors, countries } = this.state;
         let zcode;
         if (form.country === "United States of America") {
             zcode = (
@@ -97,7 +84,12 @@ class SignUp extends Component {
                 <div className="body">
                     <h3 className="text-center">Sign Up</h3>
 
-                    {this.getAlert()}
+                    {errors.length > 0 && (
+                        <div className="alert alert-danger">
+                            <strong>Failed!</strong> The following error(s) have occured:
+                            <ul>{errors.map((error, index) => <li key={index}>{error}</li>)}</ul>
+                        </div>
+                    )}
 
                     <div className="form-group">
                         <label>Name</label>
@@ -149,10 +141,12 @@ class SignUp extends Component {
                             value={form.country}
                         >
                             <option value="">Select your country</option>
-                            <option>United States of America</option>
-                            {this.state.countries.map((country, index) => {
-                                return <option key={index}>{country.long}</option>;
-                            })}
+                            <option value="US">United States of America</option>
+                            {countries.map(country => (
+                                <option key={country.short} value={country.short}>
+                                    {country.long}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     {zcode}
@@ -166,9 +160,9 @@ class SignUp extends Component {
                     </div>
                     <div className="form-group text-center border">
                         <h4>Already have an account?</h4>
-                        <a href="/login">
+                        <Link to="/login">
                             <u>Sign in</u>
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <Footer />
