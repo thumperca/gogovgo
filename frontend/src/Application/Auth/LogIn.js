@@ -10,8 +10,8 @@ class LogIn extends Component {
         super(props, context);
         this.state = {
             form: { email: "", password: "" },
-            login: false,
-            errors: []
+            failed: false,
+            busy: false
         };
     }
 
@@ -25,43 +25,25 @@ class LogIn extends Component {
      * Handle login
      */
     handleSubmit = () => {
-        this.setState({ errors: [], login: false });
+        if (this.state.busy) return;
+        this.setState({ failed: false, busy: true });
         this.props
             .mutate({ variables: { ...this.state.form } })
             .then(({ data: { login } }) => {
-                let state = { busy: false };
-                if (login.login) {
-                    login.login = true;
-                    state.form = {
-                        email: "",
-                        password: ""
-                    };
+                if (login.success) {
+                    //  success
+                    localStorage.setItem("user", JSON.stringify(login.user));
                     this.props.history.push("/");
                 } else {
-                    state.errors = login.errors;
+                    //  failed
+                    this.setState({ busy: false, failed: true });
                 }
-                this.setState(state);
             })
             .catch(error => {
                 console.warn("there was an error sending the query", error);
                 this.setState({ errors: [error.graphQLErrors[0].message] });
             });
     };
-
-    /**
-     * Alert to show on page
-     * @returns JSX
-     */
-    getAlert() {
-        const { errors } = this.state;
-        if (errors.length)
-            return (
-                <div className="alert alert-danger">
-                    <strong>Failed!</strong> The following error(s) have occured:
-                    <ul>{errors.map((error, index) => <li key={index}>{error}</li>)}</ul>
-                </div>
-            );
-    }
 
     render() {
         return (
@@ -70,7 +52,11 @@ class LogIn extends Component {
                 <div className="body-wrapper">
                     <div className="body">
                         <h3 className="text-center">Sign In</h3>
-                        {this.getAlert()}
+
+                        {this.state.failed && (
+                            <div className="alert alert-danger">Invalid login credentials</div>
+                        )}
+
                         <div className="form-group email">
                             <input
                                 onChange={e => this.handleChange("email", e)}
@@ -111,8 +97,14 @@ class LogIn extends Component {
 const submitQuery = gql`
     mutation($email: String!, $password: String!) {
         login(email: $email, password: $password) {
-            login
-            errors
+            success
+            user {
+                id
+                firstName
+                lastName
+                email
+                token
+            }
         }
     }
 `;
