@@ -85,11 +85,10 @@ class Validator:
                 self.errors.append('The zipcode field is required.')
             county = get_county(zipcode, 'US')
             if not county:
-                    raise GraphQLError('The postal code is invalid')
+                raise GraphQLError('The postal code is invalid')
             else:
                 self.cleaned_data['zipcode'] = zipcode
                 self.cleaned_data['county'] = county
-
 
 
 class Form(Validator):
@@ -129,7 +128,6 @@ class Signup(graphene.Mutation):
 
     created = graphene.Boolean()
     errors = graphene.List(graphene.String)
-
 
     @staticmethod
     def mutate(root, args, context, info):
