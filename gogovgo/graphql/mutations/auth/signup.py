@@ -17,10 +17,18 @@ from gogovgo.gogovgo_site.models import UserProfile
 from gogovgo.scripts.geocode import get_county
 
 
-class Validator:
+class LocationValidator:
+    """Validation location"""
+
+    def validate_location(self):
+        if self.errors:
+            return
+
+
+class FormValidator:
     """Form validation"""
 
-    def validate(self):
+    def validate_form(self):
         self.validate_name()
         self.validate_email()
         self.validate_username()
@@ -77,27 +85,32 @@ class Validator:
         country = self.data.get('country', '').strip()
         if not country:
             return self.errors.append('The country must be selected.')
+
         valid_countries = (short for short, _ in countries)
         if country not in valid_countries:
-            self.errors.append('The country field is invalid.')
-        else:
-            self.cleaned_data['country'] = country
+            return self.errors.append('The country field is invalid.')
+
+        self.cleaned_data['country'] = country
 
     def validate_zipcode(self):
         zipcode = self.data.get('zipcode', '').strip()
         country = self.data.get('country', '').strip()
-        if country == 'US':
-            if not zipcode:
-                self.errors.append('The zipcode field is required.')
-            county = get_county(zipcode, 'US')
-            if not county:
-                raise GraphQLError('The postal code is invalid')
-            else:
-                self.cleaned_data['zipcode'] = zipcode
-                self.cleaned_data['county'] = county
+        if country != 'US':
+            return
+
+        if not zipcode:
+            return self.errors.append('The zipcode field is required.')
+        if len(zipcode) != 5:
+            return self.errors.append('The zipcode field must be 5 characters long.')
+
+        cleaned_zipcode = ''.join((x for x in zipcode if x.isdigit()))
+        if cleaned_zipcode != zipcode:
+            return self.errors.append('The zipcode field is invalid.')
+
+        self.cleaned_data['zipcode'] = zipcode
 
 
-class Form(Validator):
+class Form(FormValidator, LocationValidator):
     """Form to user signup"""
 
     def __init__(self, data):
@@ -106,7 +119,8 @@ class Form(Validator):
         self.errors = []
 
     def is_valid(self):
-        self.validate()
+        self.validate_form()
+        self.validate_location()
         return not self.errors
 
     def save(self):

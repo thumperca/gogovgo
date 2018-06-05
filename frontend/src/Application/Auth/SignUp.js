@@ -5,14 +5,17 @@ import { Link } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
 
+const emptyForm = { name: "", username: "", email: "", password: "", country: "", zipcode: "" };
+
 class SignUp extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             countries: [],
-            form: { name: "", username: "", email: "", password: "", country: "", zipcode: "" },
+            form: { ...emptyForm },
             created: false,
-            errors: []
+            errors: [],
+            busy: false
         };
     }
 
@@ -34,26 +37,29 @@ class SignUp extends Component {
      * Handle submission
      */
     handleSubmit = () => {
-        window.scrollTo(0, 0);
-        this.setState({ errors: [], created: false });
+        if (this.state.busy) return;
+
+        //  scroll alert into view
+        const scroll = () => {
+            const elm = document.querySelector(".alert");
+            if (elm) window.scrollTo(0, elm.offsetTop - 20);
+        };
+
+        //  set state to busy
+        this.setState({ errors: [], created: false, busy: true }, scroll);
+
+        //  query server
         this.props
             .mutate({ variables: { ...this.state.form } })
             .then(({ data: { signup } }) => {
                 let state = { busy: false };
                 if (signup.created) {
                     state.created = true;
-                    state.form = {
-                        name: "",
-                        email: "",
-                        username: "",
-                        password: "",
-                        country: "",
-                        zipcode: ""
-                    };
+                    state.form = { ...emptyForm };
                 } else {
                     state.errors = signup.errors;
                 }
-                this.setState(state);
+                this.setState(state, scroll);
             })
             .catch(error => {
                 console.warn("there was an error sending the query", error);
@@ -62,28 +68,27 @@ class SignUp extends Component {
     };
 
     render() {
-        const { form, errors, countries } = this.state;
-        let zcode;
-        if (form.country === "United States of America") {
-            zcode = (
-                <div className="form-group">
-                    <label>Zip code</label>
-                    <input
-                        type="text"
-                        placeholder="Insert Zip code"
-                        className="form-control"
-                        onChange={e => this.handleChange("zipcode", e)}
-                        value={form.zipcode}
-                    />
-                </div>
-            );
-        }
+        const { form, errors, countries, busy } = this.state;
+
         return (
             <div id="signup">
                 <Header />
+
                 <div className="body">
                     <h3 className="text-center">Sign Up</h3>
 
+                    {/* Loading status of page */}
+                    {busy && (
+                        <div className="alert alert-info">
+                            Submitting.. please wait{" "}
+                            <i
+                                style={{ fontSize: "20px" }}
+                                class="fa fa-spin fa-spinner pull-right"
+                            />
+                        </div>
+                    )}
+
+                    {/* Validation errors */}
                     {errors.length > 0 && (
                         <div className="alert alert-danger">
                             <strong>Failed!</strong> The following error(s) have occured:
@@ -91,6 +96,7 @@ class SignUp extends Component {
                         </div>
                     )}
 
+                    {/* Name field */}
                     <div className="form-group">
                         <label>Name</label>
                         <p>Your name will be kept private, and NOT published online.</p>
@@ -102,6 +108,8 @@ class SignUp extends Component {
                             value={form.name}
                         />
                     </div>
+
+                    {/* Username field */}
                     <div className="form-group">
                         <label>Username</label>
                         <p>Your username is public, and WILL be published online.</p>
@@ -113,6 +121,8 @@ class SignUp extends Component {
                             value={form.username}
                         />
                     </div>
+
+                    {/* Email field */}
                     <div className="form-group">
                         <label>Email</label>
                         <input
@@ -123,6 +133,8 @@ class SignUp extends Component {
                             value={form.email}
                         />
                     </div>
+
+                    {/* Password field */}
                     <div className="form-group">
                         <label>Password</label>
                         <input
@@ -133,6 +145,8 @@ class SignUp extends Component {
                             value={form.password}
                         />
                     </div>
+
+                    {/* Country field */}
                     <div className="form-group">
                         <label>Select your country</label>
                         <select
@@ -149,7 +163,22 @@ class SignUp extends Component {
                             ))}
                         </select>
                     </div>
-                    {zcode}
+
+                    {/* Conditional zip code field */}
+                    {form.country === "US" && (
+                        <div className="form-group">
+                            <label>Zip code</label>
+                            <input
+                                type="text"
+                                placeholder="Insert Zip code"
+                                className="form-control"
+                                onChange={e => this.handleChange("zipcode", e)}
+                                value={form.zipcode}
+                            />
+                        </div>
+                    )}
+
+                    {/* Signup button */}
                     <div className="form-group text-center">
                         <button onClick={this.handleSubmit}>SIGN UP - 100% FREE</button>
                         <p className="terms">
@@ -158,6 +187,8 @@ class SignUp extends Component {
                             <Link to="/privacy">privacy policy</Link>
                         </p>
                     </div>
+
+                    {/* Login option */}
                     <div className="form-group text-center border">
                         <h4>Already have an account?</h4>
                         <Link to="/login">
@@ -165,6 +196,7 @@ class SignUp extends Component {
                         </Link>
                     </div>
                 </div>
+
                 <Footer />
             </div>
         );
