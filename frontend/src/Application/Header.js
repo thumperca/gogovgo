@@ -10,12 +10,33 @@ import { withRouter } from "react-router-dom";
 class Header extends Component {
     constructor(props, context) {
         super(props, context);
-        this.state = { howItWorksShow: false, login: false, dropdown: false };
+        this.state = {
+            howItWorksShow: false,
+            user: null,
+            dropdown: false
+        };
+    }
+
+    componentDidMount() {
+        this.setUser();
+        window.addEventListener("storage", this.setUser.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("storage", this.setUser.bind(this));
+    }
+
+    setUser() {
+        let user = localStorage.getItem("user");
+        if (user) user = JSON.parse(user);
+        this.setState({ user: user });
     }
 
     render() {
         let howItWorksClose = () => this.setState({ howItWorksShow: false });
         const goto = url => this.props.history.push(url);
+
+        const { user } = this.state;
 
         const userIcon = {
             marginRight: "5px",
@@ -30,19 +51,19 @@ class Header extends Component {
                 </NavItem>
             </Nav>
         );
-        if (this.state.login) {
+        if (user) {
             navItem = (
                 <Nav pullRight>
                     <NavItem
                         className="nav-link how-it-work user"
                         onClick={() => this.setState({ dropdown: !this.state.dropdown })}
                     >
-                        <span>Manvir</span>
+                        <span>{user.firstName}</span>
                         <i className="fa fa-angle-down" />
                         <i className="fa fa-user-circle" />
                         <div className="profile-option-mobile">
-                            <a>Edit Profile</a>
-                            <a>Logout</a>
+                            <span>Edit Profile</span>
+                            <span>Logout</span>
                         </div>
                     </NavItem>
                 </Nav>
