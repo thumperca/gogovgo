@@ -2002,9 +2002,15 @@ select.location-selector {
   font-size: 13px;
 }
 
-#signup .form-group .terms {
-  width: 300px;
-  margin: 0 auto;
+#signup .terms {
+  width: 90%;
+  max-width: 300px;
+  margin: 0 auto !important;
+}
+
+#signup .terms a {
+  color: #888;
+  text-decoration: underline;
 }
 
 #signup .border {
@@ -2025,7 +2031,6 @@ select.location-selector {
 }
 
 #signup.login footer {
-  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;

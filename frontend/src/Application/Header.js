@@ -5,7 +5,7 @@
 import React, { Component } from "react";
 import HowItWorks from "./HowItWorks";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class Header extends Component {
     constructor(props, context) {
@@ -13,12 +13,9 @@ class Header extends Component {
         this.state = { howItWorksShow: false, login: false, dropdown: false };
     }
 
-    signup() {
-        this.props.history.push("/signup");
-    }
-
     render() {
         let howItWorksClose = () => this.setState({ howItWorksShow: false });
+        const goto = url => this.props.history.push(url);
 
         const userIcon = {
             marginRight: "5px",
@@ -27,7 +24,7 @@ class Header extends Component {
 
         let navItem = (
             <Nav pullRight>
-                <NavItem className="nav-link how-it-work" onClick={() => this.signup()}>
+                <NavItem className="nav-link how-it-work" onClick={() => goto("/signup")}>
                     <i className="fa fa-user-circle" style={userIcon} />
                     Sign up
                 </NavItem>

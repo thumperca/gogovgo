@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
+import { Link } from "react-router-dom";
 
 import Header from "../Header";
 import Footer from "../Footer";
@@ -158,8 +159,9 @@ class SignUp extends Component {
                     <div className="form-group text-center">
                         <button onClick={this.handleSubmit}>SIGN UP - 100% FREE</button>
                         <p className="terms">
-                            By creating an account, you agree to the <u>terms of participation</u>
-                            and <u>privacy policy</u>
+                            By creating an account, you agree to the{" "}
+                            <Link to="/terms">terms of participation</Link> and{" "}
+                            <Link to="/privacy">privacy policy</Link>
                         </p>
                     </div>
                     <div className="form-group text-center border">
