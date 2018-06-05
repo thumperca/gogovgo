@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { gql, graphql } from "react-apollo";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 import Header from "../Header";
 import Footer from "../Footer";
@@ -67,7 +67,7 @@ class LogIn extends Component {
         return (
             <div id="signup" className="login">
                 <Header />
-                <div class="body-wrapper">
+                <div className="body-wrapper">
                     <div className="body">
                         <h3 className="text-center">Sign In</h3>
                         {this.getAlert()}
@@ -95,9 +95,9 @@ class LogIn extends Component {
                         </div>
                         <div className="form-group text-center border">
                             <h4>Do not have an account?</h4>
-                            <a href="/signup">
+                            <Link to="/signup">
                                 <u>Sign up - 100% free</u>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 import Tracker from "./Tracker";
@@ -42,9 +42,7 @@ class App extends Component {
 
         return (
             <Router>
-                <div>
-                    <Route exact path="/signup" component={SignUp} />
-                    <Route exact path="/login" component={LogIn} />
+                <Fragment>
                     <Route exact path="/" component={Tracker(HomeRedirect)} />
                     <Route
                         exact
@@ -60,11 +58,15 @@ class App extends Component {
                         component={Tracker(PoliticianWithReview)}
                     />
 
+                    {/* Auth pages */}
+                    <Route path="/signup" component={SignUp} />
+                    <Route path="/login" component={LogIn} />
+
                     {/* Static pages */}
                     <Route path="/terms" component={Tracker(Terms)} />
                     <Route path="/privacy" component={Tracker(PrivacyPolicy)} />
                     <Route path="/contact" component={Tracker(Contact)} />
-                </div>
+                </Fragment>
             </Router>
         );
     }
